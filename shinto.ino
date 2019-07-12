@@ -161,7 +161,8 @@ void loop() {
             digitalWrite(pinTrigger,currentTrigger);
           }
 
-//          
+//          Serial output for test reasons!          
+//
 //          Serial.print(clockVar);
 //          Serial.print(": ");
 //          Serial.print(phase);
