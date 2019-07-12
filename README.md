@@ -1,10 +1,10 @@
-
 Command line instructions
 
 You can also upload existing files from your computer using the instructions below.
 Git global setup
 
 git config --global user.name "julia.eckardt"
+
 git config --global user.email "julia.eckardt@stud.uni-goettingen.de"
 
 Create a new repository
