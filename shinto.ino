@@ -23,8 +23,18 @@ byte  stateArray[80];
 bool  triggerArray[80];
 float timeArray[80];
 
-int sysMod = 1; // default  free run 1 timing 2 calibration
+int sysMod = 3; // default  free run 1 timing 2 calibration
 double calibrationStateTime = 4.0;
+
+/////////////////////////////
+// GENERAL TRAIN VARIABLES //
+/////////////////////////////
+
+int   phase = 0;
+int   currentState = 0;
+int   currentTrigger = LOW;
+bool  singleStart = true;
+bool  singleStop = true;
 
 //////////////////////////
 // STIM TRAIN VARIABLES //
@@ -37,17 +47,27 @@ float IPI = 0.0;
 float ITI = 60.0;
 int   statePattern1[5] = {91,78,65,77,116};
 int   statePattern2[4] = {91,78,65,78};
-int   numPulses1st = sizeof(statePattern1)/2;
-int   numPulses2nd = sizeof(statePattern2)/2;
+int   numPulses1st = sizeof(statePattern1)/ sizeof(int);
+int   numPulses2nd = sizeof(statePattern2)/ sizeof(int);
 int   bonusPulses = 1;
 int   maxPhases = 80;
-int   phase = 0;
-int   currentState = 0;
-int   currentTrigger = LOW;
-bool  singleFire = true;
 
+////////////////////
+// TEMPLATE TRAIN //
+////////////////////
 
+float preTemplateDur = 60.0;
+float templateStepDur = 0.5;
+int   stateTemplate1[5] = {91, 78, 65, 78, 91};
+int   stateTemplate2[6] = {91, 78, 65, 78, 91, 116};
+float templateIPI = 0.0;
+float templateITI = 60.0;
+int   templateRep = 10;
 
+int   numMemberTemplate1 = sizeof(stateTemplate1)/ sizeof(int);
+int   numMemberTemplate2 = sizeof(stateTemplate2)/ sizeof(int);
+
+int templatePhases = templateRep * (numMemberTemplate1+1)+ templateRep * (numMemberTemplate2+1);
 /////////////////////////////
 // Communication Variables //
 /////////////////////////////
@@ -96,7 +116,7 @@ void loop() {
     case 1:
       {
 
-        if (stimTrainRunning == false and singleFire == true) {
+        if (stimTrainRunning == false and singleStart == true) {
           // get timing, triggers, and states
           getStimTrainTiming();
           getStimTrainTriggers();
@@ -116,7 +136,8 @@ void loop() {
         
           // start the train & reset clock
           stimTrainRunning = true;
-          singleFire = false;
+          singleStart = false;
+          singleStop = true;
           clockVar = 0.0;
           delay(0.5);
         Serial.println(numPulses2nd);
@@ -134,13 +155,14 @@ void loop() {
         }
         else {
           
-          if (clockVar > timeArray[79]){
+          if (clockVar > timeArray[79] and singleStop == true){
               
           stimTrainRunning = false;
             digitalWrite(pinTrigger,LOW);
             pinState = byte(127);
             byte2pinMap();
             setResistors();
+            singleStop = false;
           
                       }
                       
@@ -182,13 +204,15 @@ void loop() {
       break;
 
     case 2:
+     {
+      
       // if calibrationMode is active the box cycles slowly through the 128 states @ 0.25 Hz.
       // you can measure the produced voltage at the  ShockPowerSupply with a multimeter.
       writeOutMode = 0;
       writeOutFlag = true;
       //turn on trigger so that there is always voltage on the ShockPowerSupply
       digitalWrite(pinTrigger, HIGH);
-      {
+     
 
         // test if 4 sec (default value of calibrationStateTime) are done and increase the
         // pinning state, reset the clock.
@@ -204,6 +228,26 @@ void loop() {
       }
       break;
 
+      case 3:
+      {
+        getPatternTriggers();
+        for (int x = 0; x < templatePhases ; x++) {
+          
+          
+          Serial.print(x);
+          Serial.print(": ");
+          //Serial.print(timeArray[x]);
+          //Serial.print(' ');
+          Serial.print(triggerArray[x]);
+          //Serial.print(' ');
+          //Serial.print(stateArray[x]);
+          //Serial.print(' ');
+        Serial.println();
+        }
+        Serial.println("=====================");
+        
+        }
+      break;
     default:
       break;
   }
