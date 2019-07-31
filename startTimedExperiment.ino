@@ -1,11 +1,4 @@
 void startTimedExperiment() {
-
-  // get timing, triggers, and states
-  getStimTrainTiming();
-  getStimTrainTriggers();
-  getStimTrainStates();
-  phase = 0;
-
   // set output to lowest state and turn off trigger
   currentState = 127;
   currentTrigger = LOW;

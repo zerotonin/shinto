@@ -1,4 +1,5 @@
 void writeOutFunc() {
+  char titleStr[13] = "Pattern Mode";
   if (writeOutFlag == true) {
 
     switch (writeOutMode) {
@@ -17,9 +18,18 @@ void writeOutFunc() {
       case 2:
       {
       // This is the write out function to see the stimulus succesion for classic associative conditioning
+
+        if (sysMod == 3){
+         titleStr[13] = "Pattern Mode";
+        }
+        else
+        {
+         titleStr[13] = "Classic Mode";
+        }
         
         Serial.println("=========================");
         Serial.println("Timed Experiment Protocol");
+        Serial.println(titleStr);
         Serial.println("=========================");
         SprintTimeTable();
         Serial.println("=========================");

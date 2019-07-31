@@ -117,7 +117,12 @@ void loop() {
       {
 
         if (stimTrainRunning == false and singleStart == true) {
-          
+          // get timing, triggers, and states
+  getStimTrainTiming();
+  getStimTrainTriggers();
+  getStimTrainStates();
+  phase = 0;
+          startTimedExperiment();
 
         }
         else {
@@ -181,17 +186,12 @@ void loop() {
     case 3:
       {          
         if (stimTrainRunning == false and singleStart == true) {
-          singleStart = false;
-          writeOutFlag = false;
           getPatternTriggers();
-          Serial.println("got triggers");
           getPatternTiming();
-          Serial.println("got timing");
           getPatternStates();
-          Serial.println("got states");
           
-          writeOutMode=2;
-          writeOutFlag=true;
+          phase = 0;
+          startTimedExperiment();
         }
         else {
 
