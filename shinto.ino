@@ -105,12 +105,11 @@ void setup() {
 
 void loop() {
   // check if there is a serial command from MatLab
-  if (Serial.available() == 0) {
-  }
-  else {
+  if (Serial.available() != 0){
     serialComInt = Serial.parseInt();
     SerialCommunication();
   }
+  
   switch (sysMod) {
 
     case 1:
@@ -118,111 +117,63 @@ void loop() {
 
         if (stimTrainRunning == false and singleStart == true) {
           // get timing, triggers, and states
-  getStimTrainTiming();
-  getStimTrainTriggers();
-  getStimTrainStates();
-  phase = 0;
-          startTimedExperiment();
-
-        }
-        else {
-
-          if (clockVar > timeArray[timeArrayLen-1] and singleStop == true) {
-
-              endTimedExperiment();
-
-          }
-
-          if (timeArray[phase] < clockVar and stimTrainRunning) {
-
-            currentState = stateArray[phase];
-            currentTrigger = triggerArray[phase];
-
-            phase++;
-
-
-            // set new resistor state
-            pinState = byte(currentState);
-            byte2pinMap();
-            setResistors();
-
-            // set trigger
-            digitalWrite(pinTrigger, currentTrigger);
-          }
-
-        }
-
-
-
-
-      }
-      break;
-
-    case 2:
-      {
-
-        // if calibrationMode is active the box cycles slowly through the 128 states @ 0.25 Hz.
-        // you can measure the produced voltage at the  ShockPowerSupply with a multimeter.
-        writeOutMode = 0;
-        writeOutFlag = true;
-        //turn on trigger so that there is always voltage on the ShockPowerSupply
-        digitalWrite(pinTrigger, HIGH);
-
-
-        // test if 4 sec (default value of calibrationStateTime) are done and increase the
-        // pinning state, reset the clock.
-        if (clockVar > calibrationStateTime) {
-          pinState += 1; // go to next higher dampening state
-          pinState = pinState % 128; // make sure that the state cannot be outside 0 -> 127
-          byte2pinMap(); // convert the bits of the byte into a vector of booleans which can be used to toggel the channels (pins)
-          setResistors(); // write out the boolean vector to the digital channels
-          clockVar = 0.0; // reset cloxk
-        }
-        // print out calibration progress
-        writeOutFunc();
-      }
-      break;
-
-    case 3:
-      {          
-        if (stimTrainRunning == false and singleStart == true) {
-          getPatternTriggers();
-          getPatternTiming();
-          getPatternStates();
-          
+          getStimTrainTiming();
+          getStimTrainTriggers();
+          getStimTrainStates();
           phase = 0;
           startTimedExperiment();
         }
         else {
 
-          if (clockVar > timeArray[timeArrayLen-1] and singleStop == true) {
-
-              endTimedExperiment();
-
-          }
-
-          if (timeArray[phase] < clockVar and stimTrainRunning) {
-
-            currentState = stateArray[phase];
-            currentTrigger = triggerArray[phase];
-
-            phase++;
-
-
-            // set new resistor state
-            pinState = byte(currentState);
-            byte2pinMap();
-            setResistors();
-
-            // set trigger
-            digitalWrite(pinTrigger, currentTrigger);
-          }
-
+          runTimedExperiment();
         }
-
       }
-      break;
-    default:
-      break;
+        break;
+
+      case 2:
+        {
+          // if calibrationMode is active the box cycles slowly through the 128 states @ 0.25 Hz.
+          // you can measure the produced voltage at the  ShockPowerSupply with a multimeter.
+          writeOutMode = 0;
+          writeOutFlag = true;
+          //turn on trigger so that there is always voltage on the ShockPowerSupply
+          digitalWrite(pinTrigger, HIGH);
+
+
+          // test if 4 sec (default value of calibrationStateTime) are done and increase the
+          // pinning state, reset the clock.
+          if (clockVar > calibrationStateTime) {
+            pinState += 1; // go to next higher dampening state
+            pinState = pinState % 128; // make sure that the state cannot be outside 0 -> 127
+            byte2pinMap(); // convert the bits of the byte into a vector of booleans which can be used to toggel the channels (pins)
+            setResistors(); // write out the boolean vector to the digital channels
+            clockVar = 0.0; // reset cloxk
+          }
+          // print out calibration progress
+          writeOutFunc();
+        }
+        break;
+
+      case 3:
+        {
+          if (stimTrainRunning == false and singleStart == true) {
+            getPatternTriggers();
+            getPatternTiming();
+            getPatternStates();
+
+            phase = 0;
+            startTimedExperiment();
+          }
+          else {
+
+            runTimedExperiment();
+
+          }
+        }
+        break;
+
+      default:
+
+        break;
+      }
   }
-}
