@@ -211,6 +211,8 @@ void loop() {
           Serial.println("got triggers");
           getPatternTiming();
           Serial.println("got timing");
+          getPatternStates();
+          Serial.println("got states");
           
           writeOutMode=2;
           writeOutFlag=true;
