@@ -117,31 +117,7 @@ void loop() {
       {
 
         if (stimTrainRunning == false and singleStart == true) {
-          // get timing, triggers, and states
-          getStimTrainTiming();
-          getStimTrainTriggers();
-          getStimTrainStates();
-          phase = 0;
-
-
-          currentState = 127;
-          currentTrigger = LOW;
-          // set new resistor state
-          pinState = byte(currentState);
-          byte2pinMap();
-          setResistors();
-
-          // set trigger
-          digitalWrite(pinTrigger, currentTrigger);
-
-          // start the train & reset clock
-          stimTrainRunning = true;
-          singleStart = false;
-          singleStop = true;
-          clockVar = 0.0;
-          delay(0.5);
-          writeOutMode=2;
-          writeOutFlag=true;
+          
 
         }
         else {
@@ -216,6 +192,32 @@ void loop() {
           
           writeOutMode=2;
           writeOutFlag=true;
+        }
+        else {
+
+          if (clockVar > timeArray[timeArrayLen-1] and singleStop == true) {
+
+              endTimedExperiment();
+
+          }
+
+          if (timeArray[phase] < clockVar and stimTrainRunning) {
+
+            currentState = stateArray[phase];
+            currentTrigger = triggerArray[phase];
+
+            phase++;
+
+
+            // set new resistor state
+            pinState = byte(currentState);
+            byte2pinMap();
+            setResistors();
+
+            // set trigger
+            digitalWrite(pinTrigger, currentTrigger);
+          }
+
         }
 
       }
