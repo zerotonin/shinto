@@ -25,4 +25,8 @@ void getPatternTiming() {
     }
     timeSec += templateIPI;
   }
+   for (int fillerI = c; fillerI<timeArrayLen;fillerI++){
+    
+    timeArray[fillerI] = timeSec;
+  }
 }

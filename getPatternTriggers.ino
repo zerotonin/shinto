@@ -19,6 +19,10 @@ void getPatternTriggers() {
     triggerArray[c] = false;
     c++;
   }
-  
+
+  for (int fillerI = c; fillerI<timeArrayLen;fillerI++){
+    
+    triggerArray[fillerI] = false;
+  }
 
 }

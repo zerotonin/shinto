@@ -23,4 +23,8 @@ int c = 0;
       stateArray[c] = 127;
       c++;
   }
+  for (int fillerI = c; fillerI<timeArrayLen;fillerI++){
+    Serial.println(fillerI);
+    stateArray[fillerI] = 127;
+  }
 }
