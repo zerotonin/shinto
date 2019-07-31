@@ -5,23 +5,24 @@ void getPatternTiming() {
 
   for (int templateI = 0; templateI < templateRep; templateI++) {
     for (int memberI = 0; memberI < numMemberTemplate1 + 1; memberI++) {
-      timeArray[c] = true;
+      
+      timeArray[c] = timeSec;
       c++;
       timeSec += templateStepDur;
     }
     timeSec += templateIPI;
   }
-
   timeSec += templateITI;
 
 
-  for (int templateI = 0; templateI < templateRep; templateI++) {
-    for (int memberI = 0; memberI < numMemberTemplate2 + 1; memberI++) {
-      timeArray[c] = true;
+  for (int templateI2 = 0; templateI2 < templateRep; templateI2++) {
+    for (int memberI2 = 0; memberI2 < numMemberTemplate2 + 1; memberI2++) {
+
+
+      timeArray[c] = timeSec;
       c++;
       timeSec += templateStepDur;
     }
     timeSec += templateIPI;
   }
-
 }

@@ -18,12 +18,12 @@ int  pinTrigger = 4;
 double clockVar = 0.0;
 byte pinState = 0; // this variable describes the dampening value 0 ->128
 
+const int   timeArrayLen = 240;
+byte  stateArray[timeArrayLen];
+bool  triggerArray[timeArrayLen];
+float timeArray[timeArrayLen];
 
-byte  stateArray[80];
-bool  triggerArray[80];
-float timeArray[80];
-
-int sysMod = 3; // default  free run 1 timing 2 calibration
+int sysMod = 2; // default  free run 1 timing 2 calibration
 double calibrationStateTime = 4.0;
 
 /////////////////////////////
@@ -140,29 +140,15 @@ void loop() {
           singleStop = true;
           clockVar = 0.0;
           delay(0.5);
-          Serial.println(numPulses2nd);
-          for (int c = 0; c < 80 ; c++) {
-            Serial.print(timeArray[c]);
-            Serial.print(' ');
-            Serial.print(triggerArray[c]);
-            Serial.print(' ');
-            Serial.print(stateArray[c]);
-            Serial.print(' ');
-            Serial.println();
-          }
-          Serial.println("=====================");
+          writeOutMode=2;
+          writeOutFlag=true;
 
         }
         else {
 
-          if (clockVar > timeArray[79] and singleStop == true) {
+          if (clockVar > timeArray[timeArrayLen-1] and singleStop == true) {
 
-            stimTrainRunning = false;
-            digitalWrite(pinTrigger, LOW);
-            pinState = byte(127);
-            byte2pinMap();
-            setResistors();
-            singleStop = false;
+              endTimedExperiment();
 
           }
 
@@ -183,18 +169,6 @@ void loop() {
             digitalWrite(pinTrigger, currentTrigger);
           }
 
-          //          Serial output for test reasons!
-          //
-          //          Serial.print(clockVar);
-          //          Serial.print(": ");
-          //          Serial.print(phase);
-          //          Serial.print(" | ");
-          //          Serial.print(timeArray[phase]);
-          //          Serial.print(" | ");
-          //          Serial.print(currentTrigger);
-          //          Serial.print(" | ");
-          //          Serial.print(currentState);
-          //          Serial.println(" | ");
         }
 
 
@@ -229,25 +203,17 @@ void loop() {
       break;
 
     case 3:
-      {
-        if (singleStart == true) {
-          getPatternTriggers();
-          getPatternTiming();
-          for (int x = 0; x < templatePhases ; x++) {
-
-
-            Serial.print(x);
-            Serial.print(": ");
-            Serial.print(timeArray[x]);
-            Serial.print(' ');
-            Serial.print(triggerArray[x]);
-            //Serial.print(' ');
-            //Serial.print(stateArray[x]);
-            //Serial.print(' ');
-            Serial.println();
-          }
-          Serial.println("=====================");
+      {          
+        if (stimTrainRunning == false and singleStart == true) {
           singleStart = false;
+          writeOutFlag = false;
+          getPatternTriggers();
+          Serial.println("got triggers");
+          getPatternTiming();
+          Serial.println("got timing");
+          
+          writeOutMode=2;
+          writeOutFlag=true;
         }
 
       }
