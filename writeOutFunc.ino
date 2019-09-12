@@ -21,6 +21,15 @@ void writeOutFunc() {
 
         if (sysMod == 3){
          titleStr[13] = "Pattern Mode";
+        
+        Serial.println("===========================");
+        Serial.println("Pattern Experiment Protocol");
+        Serial.println(titleStr);
+        Serial.println("===========================");
+        SprintTimeTable();
+        Serial.println("===========================");
+        writeOutMode = 1;
+        writeOutFlag=false;
         }
         else
         {

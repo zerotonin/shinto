@@ -23,7 +23,7 @@ byte  stateArray[timeArrayLen];
 bool  triggerArray[timeArrayLen];
 float timeArray[timeArrayLen];
 
-int sysMod = 2; // default  free run 1 timing 2 calibration
+int sysMod = 3; // default  free run 1 timing 2 calibration
 double calibrationStateTime = 4.0;
 
 /////////////////////////////
@@ -43,9 +43,9 @@ bool  singleStop = true;
 bool  stimTrainRunning = false;
 float preStimDur = 60.0;
 float pulseDur = 5.0;
-float IPI = 0.0;
+float IPI = 1.0;
 float ITI = 60.0;
-int   statePattern1[5] = {91, 78, 65, 77, 116};
+int   statePattern1[5] = {91, 78, 65, 78, 127};
 int   statePattern2[4] = {91, 78, 65, 78};
 int   numPulses1st = sizeof(statePattern1) / sizeof(int);
 int   numPulses2nd = sizeof(statePattern2) / sizeof(int);
@@ -57,10 +57,10 @@ int   maxPhases = 80;
 ////////////////////
 
 float preTemplateDur = 60.0;
-float templateStepDur = 0.5;
-int   stateTemplate1[5] = {91, 78, 65, 78, 91};
-int   stateTemplate2[6] = {91, 78, 65, 78, 91, 116};
-float templateIPI = 2.5;
+float templateStepDur = 0.25;
+int   stateTemplate1[5] = {67, 54, 67, 80, 92};
+int   stateTemplate2[6] = {67, 54, 67, 80, 92, 127};
+float templateIPI = 3.5;
 float templateITI = 60.0;
 int   templateRep = 10;
 
@@ -111,6 +111,12 @@ void loop() {
   }
   
   switch (sysMod) {
+
+    case 0:{
+          
+    endTimedExperiment();
+    break;
+    }
 
     case 1:
       {
