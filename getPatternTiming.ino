@@ -10,7 +10,7 @@ void getPatternTiming() {
       c++;
       timeSec += templateStepDur;
     }
-    timeSec += templateIPI;
+    timeSec += templateIPI-templateStepDur;
   }
   timeSec += templateITI;
 
@@ -21,7 +21,7 @@ void getPatternTiming() {
 
       timeArray[c] = timeSec;
       c++;
-      timeSec += templateStepDur;
+      timeSec += templateStepDur-templateStepDur;
     }
     timeSec += templateIPI;
   }

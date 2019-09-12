@@ -23,7 +23,7 @@ byte  stateArray[timeArrayLen];
 bool  triggerArray[timeArrayLen];
 float timeArray[timeArrayLen];
 
-int sysMod = 3; // default  free run 1 timing 2 calibration
+int sysMod = 0; // default  free run 1 timing 2 calibration 3 pattern mode
 double calibrationStateTime = 4.0;
 
 /////////////////////////////
@@ -60,7 +60,7 @@ float preTemplateDur = 60.0;
 float templateStepDur = 0.25;
 int   stateTemplate1[5] = {67, 54, 67, 80, 92};
 int   stateTemplate2[6] = {67, 54, 67, 80, 92, 127};
-float templateIPI = 3.5;
+float templateIPI = 3.75;
 float templateITI = 60.0;
 int   templateRep = 10;
 
@@ -112,11 +112,6 @@ void loop() {
   
   switch (sysMod) {
 
-    case 0:{
-          
-    endTimedExperiment();
-    break;
-    }
 
     case 1:
       {

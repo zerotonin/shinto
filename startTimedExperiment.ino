@@ -16,6 +16,6 @@ void startTimedExperiment() {
   singleStop = true;
   clockVar = 0.0;
   delay(0.5);
-  writeOutMode = 2;
   writeOutFlag = true;
+  writeOutMode = 2;
 }
