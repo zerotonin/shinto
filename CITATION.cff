@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this firmware, please cite it as below."
+title: "shinto: Arduino firmware for peak-end-rule electroshock experiments in Drosophila"
+abstract: >-
+  shinto is an Arduino-Uno firmware that drives a 128-step programmable
+  electric-shock source for Drosophila aversive conditioning. It supports
+  classic Tully-style two-session stimulus trains and a pattern-stimulus
+  engine that emits voltage templates with optional terminal spikes, used
+  to test the peak-end rule in retrospective evaluation of aversive
+  episodes.
+type: software
+authors:
+  - given-names: "Bart R. H."
+    family-names: "Geurten"
+    orcid: "https://orcid.org/0000-0002-1816-3241"
+    affiliation: "Department of Zoology, University of Otago, Dunedin, New Zealand"
+repository-code: "https://github.com/zerotonin/shinto"
+license: MIT
+version: "0.1.0"
+keywords:
+  - Drosophila
+  - aversive conditioning
+  - peak-end rule
+  - Tully trigger
+  - Arduino
+  - electrophysiology
