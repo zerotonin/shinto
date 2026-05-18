@@ -1,62 +1,33 @@
+// ────────────────────────────────────────────────────────────────────
+//  writeOutFunc.ino  « single PARROTard-style telemetry frame »
+// ────────────────────────────────────────────────────────────────────
+//  Fires on every FlexiTimer2 tick when writeOutFlag is true.
+//  One line per call, leading '>' and trailing '<' so the host can
+//  distinguish telemetry from command responses ('50 1337', '>>...<<',
+//  'end').
+//
+//  Fields, in order:
+//    clockVar           seconds since last reset
+//    pinState           current dampening byte (0..127)
+//    pinTrigger digital level (0/1)
+//    sysMod             0 free  1 stim-train  2 calib  3 pattern
+//    phase              index into the loaded time/state/trigger arrays
+//    experimentRunning  0/1
+
 void writeOutFunc() {
-  if (writeOutFlag == true) {
+  if (!writeOutFlag) return;
 
-    switch (writeOutMode) {
-      case 1: // reduced
-        {
-          Serial.print(">");
-          Serial.print(clockVar);
-          Serial.print(" ");
-          Serial.print(pinState);
-          Serial.print(" ");
-          Serial.print(digitalRead(pinTrigger));
-          Serial.print(" ");
-          Serial.print(sysMod);
-          Serial.println("<");
-        }
-        break;
-
-      case 2:
-      {
-      // This is the write out function to see the stimulus succesion for classic associative conditioning
-
-        Serial.println("=========================");
-        if (sysMod == 3){
-         
-        Serial.println("Pattern Experiment Protocol");
-        
-        }
-        else
-        {
-         
-        Serial.println("Timed Experiment Protocol");
-        }
-        
-        Serial.println("=========================");
-        SprintTimeTable();
-        Serial.println("=========================");
-        writeOutMode = 1;
-        writeOutFlag=false;
-      }
-        break;
-
-
-      default:
-        {
-          Serial.print("clock: ");
-          Serial.print(clockVar);
-          Serial.print(" | pinState: ");
-          Serial.print(pinState);
-          Serial.print(" | pinTrigger: ");
-          Serial.print(digitalRead(pinTrigger));
-          Serial.print(" | pinMap: ");
-          for (int bitI = 0; bitI <= 6; bitI++ ) {
-            Serial.print(pinMap[bitI]);
-          }
-          Serial.println();
-        }
-        break;
-    }
-
-  }
+  Serial.print(">");
+  Serial.print(clockVar);
+  Serial.print(",");
+  Serial.print(pinState);
+  Serial.print(",");
+  Serial.print(digitalRead(pinTrigger));
+  Serial.print(",");
+  Serial.print(sysMod);
+  Serial.print(",");
+  Serial.print(phase);
+  Serial.print(",");
+  Serial.print(experimentRunning ? 1 : 0);
+  Serial.println("<");
 }
