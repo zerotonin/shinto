@@ -16,7 +16,7 @@ authors:
     affiliation: "Department of Zoology, University of Otago, Dunedin, New Zealand"
 repository-code: "https://github.com/zerotonin/shinto"
 license: MIT
-version: "0.1.0"
+version: "1.0.0"
 keywords:
   - Drosophila
   - aversive conditioning
@@ -24,3 +24,5 @@ keywords:
   - Tully trigger
   - Arduino
   - electrophysiology
+  - cuewire
+  - PARROTard
