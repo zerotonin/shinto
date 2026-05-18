@@ -1,21 +1,18 @@
 void startTimedExperiment() {
-  // set output to lowest state and turn off trigger
-  currentState = 127;
+  // Park output: lowest dampening state (127) and trigger LOW.
+  currentState   = 127;
   currentTrigger = LOW;
-  // set new resistor state
   pinState = byte(currentState);
   byte2pinMap();
   setResistors();
-  // set trigger
   digitalWrite(pinTrigger, currentTrigger);
 
+  experimentRunning = true;
+  singleStart       = false;
+  singleStop        = true;
+  endEmitted        = false;
+  clockVar          = 0.0;
 
-  // start the train & reset clock
-  stimTrainRunning = true;
-  singleStart = false;
-  singleStop = true;
-  clockVar = 0.0;
   delay(0.5);
   writeOutFlag = true;
-  writeOutMode = 2;
 }

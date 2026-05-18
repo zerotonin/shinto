@@ -1,25 +1,23 @@
 void runTimedExperiment() {
-  if (clockVar > timeArray[timeArrayLen - 1] and singleStop == true) {
-
+  // Natural end of the loaded timeline — emit "end" once, then clean up.
+  if (clockVar > timeArray[timeArrayLen - 1] && singleStop) {
+    if (!endEmitted) {
+      Serial.print("end");          // no newline — host treats as sentinel
+      endEmitted = true;
+    }
     endTimedExperiment();
-
   }
 
-  if (timeArray[phase] < clockVar and stimTrainRunning) {
-
-    currentState = stateArray[phase];
+  // Advance to the next phase whenever its scheduled time elapses.
+  if (timeArray[phase] < clockVar && experimentRunning) {
+    currentState   = stateArray[phase];
     currentTrigger = triggerArray[phase];
-
     phase++;
 
-
-    // set new resistor state
     pinState = byte(currentState);
     byte2pinMap();
     setResistors();
 
-    // set trigger
     digitalWrite(pinTrigger, currentTrigger);
   }
-
 }
